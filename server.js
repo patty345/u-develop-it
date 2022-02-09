@@ -1,4 +1,6 @@
-const mysql = require("mysql2");
+const db = require('./db/connection');
+// Add near the top of the file
+const apiRoutes = require('./routes/apiRoutes');
 const inputCheck = require("./utils/inputCheck");
 const express = require("express");
 
@@ -9,18 +11,8 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// Connect to the database
-const db = mysql.createConnection(
-  {
-    host: "localhost",
-    // Your MySQL username,
-    user: "root",
-    // Your MySQL password
-    password: "Patty123#",
-    database: "election",
-  },
-  console.log("Connected to the election database.")
-);
+// Add after Express middleware
+app.use('/api', apiRoutes);
 
 // GET a single candidate
 app.get("/api/candidate/:id", (req, res) => {
